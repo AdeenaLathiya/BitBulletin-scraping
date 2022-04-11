@@ -40,8 +40,14 @@ class DawnSportsSpider(scrapy.Spider):
 
         # start_urls.remove()
 
-        next_url = ['https://www.dawn.com/tech']
-        yield response.follow (next_url, callback=self.parse_news2)
+        # next_url = ['https://www.dawn.com/tech']
+        # yield response.follow (next_url, callback=self.parse_news2)
+
+    # start_urls = ['https://www.dawn.com/tech']    
+
+    def parse(self, response):
+        for newsLink in response.css("h2.story__title a::attr(href)"):
+            yield response.follow(newsLink.get(), callback=self.parse_news2)
 
     def parse_news2(self, response):
         items2 = DawnTechItem()
