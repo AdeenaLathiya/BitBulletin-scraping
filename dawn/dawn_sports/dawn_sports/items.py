@@ -5,6 +5,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+from unicodedata import category
 import scrapy
 
 
@@ -18,6 +19,7 @@ class DawnSportsItem(scrapy.Item):
     picture = scrapy.Field()
     time = scrapy.Field()
     date = scrapy.Field()
+    category = scrapy.Field()
 
     pass
 
@@ -31,5 +33,6 @@ class DawnTechItem(scrapy.Item):
     picture2 = scrapy.Field()
     # time = scrapy.Field()
     date2 = scrapy.Field()
+    category2 = scrapy.Field()
 
     pass
