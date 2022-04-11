@@ -1,25 +1,14 @@
 import scrapy
-# from scrapy.http.request import Request
 from ..items import DawnSportsItem, DawnTechItem
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
-from scrapy.linkextractors import LinkExtractor
-
 class DawnSportsSpider(scrapy.Spider):
     name = 'newsSports'
-    start_urls = ['https://www.dawn.com/sport', 'https://www.dawn.com/tech']
+    # start_urls = []
 
-    def parse_state(self, response):
-        extractor = LinkExtractor(allow=r'%s+p\d+' % self.start_urls[0])
-
-        for link in extractor.extract_links(response):
-            if link == 'https://www.dawn.com/sport':
-                print('link', link)
-                yield scrapy.Request(link.url, callback=self.parse1)
-            elif link == 'https://www.dawn.com/tech':
-                yield scrapy.Request(link.url, callback=self.parse2)   
-
-    def parse(self, response):
+    def start_requests(self):
+        yield scrapy.Request('https://www.dawn.com/sport',callback=self.parse1)
+        yield scrapy.Request('https://www.dawn.com/tech',callback=self.parse2)
+    
+    def parse1(self, response):
         for newsLink in response.css("h2.story__title a::attr(href)"):
             yield response.follow(newsLink.get(), callback=self.parse_news)
 
@@ -68,9 +57,3 @@ class DawnSportsSpider(scrapy.Spider):
         items2['category2'] = category2
 
         yield items2
-
-# settings = get_project_settings()
-# process = CrawlerProcess(settings)
-# process.crawl(DawnSportsSpider)
-# process.crawl(DawnTechSpider)
-# process.start() # the script will block here until all crawling jobs are finished

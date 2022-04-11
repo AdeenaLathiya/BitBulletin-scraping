@@ -5,7 +5,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-from unicodedata import category
+# from unicodedata import category
 import scrapy
 
 
